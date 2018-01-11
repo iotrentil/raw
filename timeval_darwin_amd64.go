@@ -1,4 +1,4 @@
-// +build darwin
+// +build amd64,darwin
 
 package raw
 
@@ -6,6 +6,8 @@ import (
 	"syscall"
 	"time"
 )
+
+const SYS_SETSOCKOPT = 105
 
 // newTimeval transforms a duration into a syscall.Timeval struct.
 // An error is returned in case of zero time value.

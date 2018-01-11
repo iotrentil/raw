@@ -274,7 +274,9 @@ func (s *sysSocket) Sendto(p []byte, flags int, to syscall.Sockaddr) error {
 	return syscall.Sendto(s.fd, p, flags, to)
 }
 func (s *sysSocket) SetSockopt(level, name int, v unsafe.Pointer, l uint32) error {
-	_, _, err := syscall.Syscall6(syscall.SYS_SETSOCKOPT, uintptr(s.fd), uintptr(level), uintptr(name), uintptr(v), uintptr(l), 0)
+	// syscall.SYS_SETSOCKOPT is not supported to build enflo with gomobile, because linux_386 dosen't define it. by hs.kwon
+	//_, _, err := syscall.Syscall6(syscall.SYS_SETSOCKOPT, uintptr(s.fd), uintptr(level), uintptr(name), uintptr(v), uintptr(l), 0)
+	_, _, err := syscall.Syscall6(SYS_SETSOCKOPT, uintptr(s.fd), uintptr(level), uintptr(name), uintptr(v), uintptr(l), 0)
 	if err != 0 {
 		return syscall.Errno(err)
 	}

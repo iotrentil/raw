@@ -1,4 +1,4 @@
-// +build !darwin,!arm
+// +build arm,linux
 
 package raw
 
@@ -7,6 +7,8 @@ import (
 	"time"
 )
 
+const SYS_SETSOCKOPT = 294
+
 // newTimeval transforms a duration into a syscall.Timeval struct.
 // An error is returned in case of zero time value.
 func newTimeval(timeout time.Duration) (*syscall.Timeval, error) {
@@ -14,7 +16,7 @@ func newTimeval(timeout time.Duration) (*syscall.Timeval, error) {
 		return nil, &timeoutError{}
 	}
 	return &syscall.Timeval{
-		Sec:  int64(timeout / time.Second),
-		Usec: int64(timeout % time.Second / time.Microsecond),
+		Sec:  int32(timeout / time.Second),
+		Usec: int32(timeout % time.Second / time.Microsecond),
 	}, nil
 }
